@@ -7,6 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile-win
     restart: always
-    tty: true # always run
+    # tty: true # always run
     ports:
       - 4200:80

@@ -3,10 +3,12 @@ SHELL ["powershell", "-command"]
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 RUN choco install -y --force nodejs
 RUN choco install -y nginx
+RUN choco install -y yarn
 WORKDIR /app
 COPY package.json .
-RUN npm install
+RUN yarn install
 COPY . .
-#RUN npm run build demo-react
-#COPY ./dist/apps/demo-react /tools/nginx-1.19.10/html
+RUN yarn build demo-react
+COPY dist/apps/demo-react /tools/nginx-1.19.10/html/
 #CMD ["nginx", "-g", "\"daemon off;\""]
+CMD ["ping", "-t", "localhost"] # keep container running
